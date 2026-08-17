@@ -330,12 +330,14 @@ export const projects = [
     name: 'SECOND BRAIN',
     tagline: 'ARTICON\u2019s community knowledge platform.',
     status: 'RECRUITING',
-    hero: 'Every year students discover resources, solve problems, and learn lessons — then graduate, and most of that knowledge disappears. Second Brain is an attempt to change that.',
+    hero: 'A personal RAG and memory layer where users can store snippets, notes, text and other information, then retrieve and interact with their accumulated knowledge through AI.',
     summary: [
-      'Second Brain is a community-built knowledge platform containing useful student knowledge: technical notes, learning resources, roadmaps, project documentation, tutorials, useful tools, GitHub repos, event resources, past projects, and lessons from seniors.',
-      'An intelligent search/AI layer can eventually let students interact with this collective knowledge naturally — so Second Brain is both a software product and a community knowledge project.',
+      'Help build Second Brain as a real AI product, not just a demo.',
+      'Second Brain is a personal RAG + memory layer that lets users store snippets, notes, text and other information, then retrieve and interact with their knowledge through AI.',
+      'As a volunteer, you will work on actually building the product — from RAG pipelines, embeddings and vector databases to retrieval, memory, context management, AI interfaces and the product itself.' ,
+      'If you want hands-on experience building a real AI system around RAG and long-term memory, this is the one to join.'
     ],
-    why: 'The knowledge already exists inside people\u2019s heads. This is where it stops disappearing every graduation.',
+    why: 'Because you will be building a real AI memory system from the ground up while getting hands-on experience with one of the most important patterns behind modern AI applications: RAG.',
     timelineLabel: 'Now building',
     timeline: [
       { label: 'Team forms', detail: 'Platform, curation, AI layer, community' },
