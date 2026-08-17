@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* ---- Color: workshop palette, not a template default ---- */
+  --color-graphite: #121317;      /* base background, warm-black concrete */
+  --color-panel: #1a1c22;         /* ticket / card surface */
+  --color-panel-raised: #21242c;  /* hovered / raised surface */
+  --color-line: #2b2e36;          /* hairline rule, perforation */
+  --color-line-bright: #3a3e49;
+  --color-paper: #f2efe7;         /* whiteboard/paper text */
+  --color-steel: #9aa1ac;         /* muted secondary text */
+  --color-steel-dim: #6b7280;
+  --color-amber: #f5b700;         /* primary signal accent (hazard tape) */
+  --color-amber-dim: #8a6a10;
+  --color-circuit: #4c8dff;       /* secondary accent, ARTICON brand tie-in */
+  --color-circuit-dim: #274a8f;
+  --color-rust: #d1491f;          /* paused / stop stamp */
+  --color-moss: #5fa777;          /* shipped / go stamp */
+
+  /* ---- Type ---- */
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-graphite);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(242,239,231,0.045) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+::selection {
+  background: var(--color-amber);
+  color: var(--color-graphite);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.input {
+  width: 100%;
+  background: var(--color-panel);
+  border: 1px solid var(--color-line-bright);
+  color: var(--color-paper);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  transition: border-color 150ms ease;
+}
+.input::placeholder {
+  color: var(--color-steel-dim);
+}
+.input:focus {
+  border-color: var(--color-amber);
+  outline: none;
+}
+
+.stub-edge {
+  position: relative;
+}
+.stub-edge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 1px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-line-bright) 0,
+    var(--color-line-bright) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+@keyframes flicker-in {
+  0% { opacity: 0; }
+  8% { opacity: 1; }
+  10% { opacity: 0.4; }
+  14% { opacity: 1; }
+  100% { opacity: 1; }
+}
+.animate-flicker-in {
+  animation: flicker-in 900ms steps(1, end) both;
+}
+
+@keyframes tick-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-tick-up {
+  animation: tick-up 500ms ease-out both;
+}
