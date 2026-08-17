@@ -2,7 +2,7 @@
 // Until then, GARAGE runs entirely off the static data in this folder —
 // applications are shown as "received" locally and logged to the console,
 // nothing breaks. See /BACKEND.md for the exact setup steps.
-export const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzmelbZBVh-Wy-GYUI52dksRCAo-I4ZG8F84kBFdE6-f93GKgb8pX0heDsLtx0fG-yr2g/exec'
+export const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwP9XccjDFVtrxymP6i5ksjsWbj25-aTyr739tYJmaUNgQjPWwUWdkxLhpgcdLx6IOGoQ/exec'
 
 export const SITE = {
   name: 'GARAGE',
