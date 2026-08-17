@@ -166,20 +166,7 @@ export default function Apply() {
           </Field>
         </fieldset>
 
-        <fieldset className="grid sm:grid-cols-2 gap-4">
-          <Field label="Weekly availability" required>
-            <select required value={form.availability} onChange={update('availability')} className="input">
-              <option value="">Select</option>
-              {AVAILABILITY.map((a) => <option key={a} value={a}>{a}</option>)}
-            </select>
-          </Field>
-          <Field label="Willing to own a deliverable?" required>
-            <select required value={form.ownership} onChange={update('ownership')} className="input">
-              <option value="">Select</option>
-              {OWNERSHIP.map((o) => <option key={o} value={o}>{o}</option>)}
-            </select>
-          </Field>
-        </fieldset>
+
 
         {status === 'error' && (
           <p className="font-mono text-sm text-rust">
