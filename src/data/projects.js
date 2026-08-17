@@ -332,12 +332,10 @@ export const projects = [
     status: 'RECRUITING',
     hero: 'A personal RAG and memory layer where users can store snippets, notes, text and other information, then retrieve and interact with their accumulated knowledge through AI.',
     summary: [
-      'Help build Second Brain as a real AI product, not just a demo.',
-      'Second Brain is a personal RAG + memory layer that lets users store snippets, notes, text and other information, then retrieve and interact with their knowledge through AI.',
-      'As a volunteer, you will work on actually building the product — from RAG pipelines, embeddings and vector databases to retrieval, memory, context management, AI interfaces and the product itself.' ,
-      'If you want hands-on experience building a real AI system around RAG and long-term memory, this is the one to join.'
+      'Second Brain is a personal RAG and memory layer where users can store snippets, notes, text and other information, then retrieve and interact with their accumulated knowledge through AI.',
+      'It is a platform for storing, retrieving and interacting with knowledge. It\u2019s built around the idea of RAG (retrieval-augmented generation) — users can store snippets, notes, text and other information, then retrieve and interact with their accumulated knowledge through AI.',
     ],
-    why: 'Because you will be building a real AI memory system from the ground up while getting hands-on experience with one of the most important patterns behind modern AI applications: RAG.',
+    why: 'The knowledge already exists inside people\u2019s heads. This is where it stops disappearing every graduation.',
     timelineLabel: 'Now building',
     timeline: [
       { label: 'Team forms', detail: 'Platform, curation, AI layer, community' },
