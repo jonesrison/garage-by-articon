@@ -16,6 +16,46 @@ import { updates as staticUpdates } from '../data/updates'
 
 const isLive = () => Boolean(APPS_SCRIPT_URL)
 
+// Apps Script's doGet CORS headers are unreliable for fetch() calls from a
+// static site's origin, so GET reads go through JSONP (a <script> tag load)
+// instead — browsers never apply CORS to script tags, so this sidesteps
+// the problem regardless of what headers Google decides to send back.
+let jsonpCounter = 0
+function jsonp(url, { timeoutMs = 8000 } = {}) {
+  return new Promise((resolve, reject) => {
+    const callbackName = `garage_jsonp_${Date.now()}_${jsonpCounter++}`
+    const script = document.createElement('script')
+    let settled = false
+
+    const cleanup = () => {
+      settled = true
+      delete window[callbackName]
+      script.remove()
+      clearTimeout(timer)
+    }
+    const timer = setTimeout(() => {
+      if (settled) return
+      cleanup()
+      reject(new Error('JSONP request timed out'))
+    }, timeoutMs)
+
+    window[callbackName] = (data) => {
+      if (settled) return
+      cleanup()
+      resolve(data)
+    }
+    script.onerror = () => {
+      if (settled) return
+      cleanup()
+      reject(new Error('JSONP script failed to load'))
+    }
+
+    const separator = url.includes('?') ? '&' : '?'
+    script.src = `${url}${separator}callback=${callbackName}`
+    document.body.appendChild(script)
+  })
+}
+
 // The Projects tab in the Sheet only needs `slug` + `status` (+ optionally
 // `rolesOpen`) — everything else (copy, roles, timeline) stays in code and
 // rarely changes. We overlay just those fields onto the static project so a
@@ -39,9 +79,7 @@ function overlayProjects(staticList, sheetRows) {
 export async function fetchProjects() {
   if (!isLive()) return staticProjects
   try {
-    const res = await fetch(`${APPS_SCRIPT_URL}?resource=projects`)
-    if (!res.ok) throw new Error('bad response')
-    const data = await res.json()
+    const data = await jsonp(`${APPS_SCRIPT_URL}?resource=projects`)
     return Array.isArray(data) && data.length ? overlayProjects(staticProjects, data) : staticProjects
   } catch (err) {
     console.warn('GARAGE: could not reach live sheet, using static project data.', err)
@@ -52,9 +90,7 @@ export async function fetchProjects() {
 export async function fetchUpdates() {
   if (!isLive()) return staticUpdates
   try {
-    const res = await fetch(`${APPS_SCRIPT_URL}?resource=updates`)
-    if (!res.ok) throw new Error('bad response')
-    const data = await res.json()
+    const data = await jsonp(`${APPS_SCRIPT_URL}?resource=updates`)
     return Array.isArray(data) && data.length ? data : staticUpdates
   } catch (err) {
     console.warn('GARAGE: could not reach live sheet, using static updates.', err)
@@ -73,12 +109,15 @@ export async function submitApplication(payload) {
   try {
     await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
+      mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ resource: 'applications', ...record }),
     })
-    // Apps Script web apps often respond via redirect / opaque response when
-    // called from a static site — we treat "no network error" as success
-    // rather than parsing the body.
+    // no-cors gives an opaque response we can't inspect (status is always 0
+    // and the body unreadable) — that's expected, not an error. Apps Script
+    // POST responses are unreliable about CORS headers even with text/plain,
+    // so this is the one reliable way to submit without the browser
+    // blocking on a response we were never going to read anyway.
     return { ok: true, mode: 'live' }
   } catch (err) {
     console.error('GARAGE: application submit failed.', err)

@@ -14,6 +14,16 @@ function doGet(e) {
   const resource = (e.parameter.resource || '').toLowerCase()
   const sheetName = resource === 'updates' ? SHEET_UPDATES : SHEET_PROJECTS
   const data = readSheetAsObjects_(sheetName)
+  // Apps Script's CORS headers on doGet are unreliable for cross-origin
+  // fetch() calls. If a `callback` param is present, respond as JSONP
+  // (a <script> tag load, which browsers never subject to CORS) instead
+  // of raw JSON — this is what the site actually uses.
+  const callback = e.parameter.callback
+  if (callback) {
+    return ContentService.createTextOutput(
+      `${callback}(${JSON.stringify(data)})`,
+    ).setMimeType(ContentService.MimeType.JAVASCRIPT)
+  }
   return jsonOutput_(data)
 }
 
